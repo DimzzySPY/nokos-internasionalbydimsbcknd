@@ -1,0 +1,15 @@
+// api/buy.js
+export default function handler(req, res){
+  if(req.method !== 'POST') return res.status(405).json({ message: 'Method Not Allowed' });
+  const { username, price, country } = req.body || {};
+  if(!username || !price) return res.status(400).json({ message: 'username & price required' });
+
+  const users = global._users || [];
+  const idx = users.findIndex(u => u.username === username);
+  if(idx === -1) return res.status(404).json({ message: 'User tidak ditemukan' });
+
+  if(users[idx].saldo < price) return res.status(400).json({ message: 'Saldo tidak cukup' });
+  users[idx].saldo -= price;
+
+  return res.json({ message: `Pembelian ${country} berhasil`, saldo: users[idx].saldo });
+}
