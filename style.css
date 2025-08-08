@@ -1,0 +1,7 @@
+body{font-family:Inter, system-ui, Arial; display:flex; align-items:center; justify-content:center; min-height:100vh; background:#f3f4f6;}
+.card{background:white; padding:20px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.08); width:320px}
+input{display:block;width:100%;margin:8px 0;padding:8px;border:1px solid #ddd;border-radius:6px}
+button{padding:8px 12px;border-radius:8px;border:none;cursor:pointer;margin:6px 4px}
+.buttons button{display:block;width:100%;margin:6px 0}
+hr{margin:12px 0}
+#msg{color:green;margin-top:10px}

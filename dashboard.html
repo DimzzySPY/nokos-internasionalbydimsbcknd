@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dashboard - Pembelian Nokos</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="card">
+    <h1>Halo, <span id="user">-</span></h1>
+    <p>Saldo: Rp <span id="saldo">0</span></p>
+
+    <h3>Pilih Nokos</h3>
+    <div class="buttons">
+      <button onclick="buy('Bangladesh',10000)">Bangladesh — Rp 10.000</button>
+      <button onclick="buy('Senegal',20000)">Senegal — Rp 20.000</button>
+      <button onclick="buy('Afganistan',30000)">Afganistan — Rp 30.000</button>
+    </div>
+
+    <hr>
+    <button id="logout">Logout</button>
+    <p id="msg"></p>
+  </div>
+
+<script>
+const API_BASE = '/api';
+const user = localStorage.getItem('username');
+if(!user){ location.href = '/index.html'; }
+
+document.getElementById('user').innerText = user;
+document.getElementById('saldo').innerText = localStorage.getItem('saldo') || 0;
+
+async function buy(country, price){
+  const res = await fetch(API_BASE + '/buy', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ username: user, country, price })
+  });
+  const data = await res.json();
+  document.getElementById('msg').innerText = data.message || '';
+  if(res.ok){
+    document.getElementById('saldo').innerText = data.saldo;
+    localStorage.setItem('saldo', data.saldo);
+  }
+}
+
+document.getElementById('logout').addEventListener('click', ()=>{ localStorage.clear(); location.href='/index.html'; });
+</script>
+</body>
+</html>

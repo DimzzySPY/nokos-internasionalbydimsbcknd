@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Login & Register - Nokos</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="card">
+    <h2>Register</h2>
+    <input id="regUser" placeholder="Username">
+    <input id="regPass" type="password" placeholder="Password">
+    <button id="btnReg">Daftar</button>
+
+    <hr>
+
+    <h2>Login</h2>
+    <input id="logUser" placeholder="Username">
+    <input id="logPass" type="password" placeholder="Password">
+    <button id="btnLog">Login</button>
+  </div>
+
+<script>
+const API_BASE = '/api'; // Vercel serverless function path
+
+async function register(){
+  const username = document.getElementById('regUser').value.trim();
+  const password = document.getElementById('regPass').value;
+  if(!username || !password){ alert('Lengkapi username & password'); return; }
+
+  const res = await fetch(API_BASE + '/register', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ username, password })
+  });
+  const data = await res.json();
+  alert(data.message);
+}
+
+async function login(){
+  const username = document.getElementById('logUser').value.trim();
+  const password = document.getElementById('logPass').value;
+  if(!username || !password){ alert('Lengkapi username & password'); return; }
+
+  const res = await fetch(API_BASE + '/login', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ username, password })
+  });
+  const data = await res.json();
+  if(res.ok){
+    localStorage.setItem('username', data.username);
+    localStorage.setItem('saldo', data.saldo);
+    location.href = '/dashboard.html';
+  } else {
+    alert(data.message);
+  }
+}
+
+document.getElementById('btnReg').addEventListener('click', register);
+document.getElementById('btnLog').addEventListener('click', login);
+</script>
+</body>
+</html>
